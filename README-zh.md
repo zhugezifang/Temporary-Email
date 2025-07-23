@@ -1,4 +1,6 @@
-# TempMail(https://tempmailto.online/) - 安全临时邮箱服务
+# TempMail - 安全临时邮箱服务
+
+[临时邮箱](https://tempmailto.online/zh)
 
 一个免费、安全、私密的临时邮箱服务，旨在保护您的真实邮箱地址免受垃圾邮件和不需要的消息侵扰。
 
