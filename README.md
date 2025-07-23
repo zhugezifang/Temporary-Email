@@ -1,6 +1,6 @@
 # TempMail - Secure Temporary Email Service
 
-TempMail(https://tempmailto.online/)
+[TempMail](https://tempmailto.online/)
 
 A free, secure, and private temporary email service designed to protect your real email address from spam and unwanted messages.
 
