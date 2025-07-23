@@ -1,0 +1,1208 @@
+<!--------------------------------
+    Author: Mehmet Kahya
+    Created: 17 March 2024
+    Last Updated: 31 January 2025
+    Chinese Version
+-------------------------------->
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      content="default-src 'self' https://api.guerrillamail.com https://cdnjs.cloudflare.com ws://127.0.0.1:* wss://127.0.0.1:*; connect-src 'self' https://api.guerrillamail.com ws://127.0.0.1:* wss://127.0.0.1:*; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src https://cdnjs.cloudflare.com; img-src 'self' data: https:;"
+    />
+    <title>安全匿名的临时邮件服务 - 临时邮箱</title>
+    <meta
+      name="description"
+      content="使用临时邮箱提供安全且匿名的临时电子邮件服务，告别垃圾邮件，保护您的隐私，免费、安全、私密的一次性邮箱服务！"
+    />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NKEFXS1BE5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NKEFXS1BE5');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4158779929727637"
+    crossorigin="anonymous"></script>
+
+    <!-- Additional SEO Meta Tags -->
+    <link rel="canonical" href="https://tempmailto.online/zh/" />
+    <link rel="alternate" hreflang="en" href="https://tempmailto.online/" />
+    <link rel="alternate" hreflang="zh" href="https://tempmailto.online/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://tempmailto.online/" />
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "临时邮箱",
+      "alternateName": "TempMail",
+      "description": "使用临时邮箱提供安全且匿名的临时电子邮件服务，告别垃圾邮件，保护您的隐私，免费、安全、私密的一次性邮箱服务！",
+      "url": "https://tempmailto.online/zh/",
+      "logo": "https://tempmailto.online/images/temp-mail-icon.png",
+      "applicationCategory": "EmailApplication",
+      "operatingSystem": "Web Browser",
+      "inLanguage": "zh",
+      "isAccessibleForFree": true,
+      "featureList": [
+        "隐私保护",
+        "即时生成",
+        "实时更新",
+        "无需注册",
+        "免费使用",
+        "垃圾邮件防护"
+      ]
+    }
+    </script>
+    
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="icon" href="../images/temp-mail-icon.png" type="image/x-icon" />
+    
+    <!-- Custom CSS for email modal and other components -->
+    <link rel="stylesheet" href="../css/style.css" />
+    
+    <!-- Add confetti lib -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Custom styles for theme switching and special effects -->
+    <style>
+      /* Status LED animation */
+      .status-led {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+      }
+      
+      .status-led.online {
+        background-color: #10b981;
+        box-shadow: 0 0 10px #10b981;
+        animation: pulse 2s infinite;
+      }
+      
+      .status-led.offline {
+        background-color: #ef4444;
+        box-shadow: 0 0 10px #ef4444;
+      }
+      
+      @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+      }
+      
+      /* Loading spinner */
+      .spinner {
+        width: 40px;
+        height: 40px;
+        margin: 20px auto;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Welcome message animations */
+      .welcome-message {
+        animation: slideIn 0.5s ease forwards;
+      }
+      
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+      }
+      
+      /* Email modal improvements for modern design */
+      .email-modal {
+        z-index: 9999 !important;
+        backdrop-filter: blur(8px);
+        animation: fadeIn 0.3s ease-out;
+      }
+      
+      .email-modal-content {
+        max-width: 800px !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+        border-radius: 1rem !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+        animation: slideInModal 0.3s ease-out;
+      }
+      
+      .email-modal .close-btn {
+        top: 1rem !important;
+        right: 1rem !important;
+        z-index: 10 !important;
+        border-radius: 0.5rem !important;
+        padding: 0.5rem !important;
+        transition: all 0.3s ease !important;
+      }
+      
+      .email-modal .email-body {
+        max-height: 400px !important;
+        overflow-y: auto !important;
+        padding: 1rem !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 0.5rem !important;
+        background-color: #f9fafb !important;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      @keyframes slideInModal {
+        from { 
+          opacity: 0; 
+          transform: scale(0.95) translateY(-20px); 
+        }
+        to { 
+          opacity: 1; 
+          transform: scale(1) translateY(0); 
+        }
+      }
+      
+      /* Mobile optimizations */
+      @media (max-width: 768px) {
+        /* Adjust container padding for mobile */
+        .max-w-6xl {
+          padding-left: 1rem !important;
+          padding-right: 1rem !important;
+        }
+        
+        /* Language switcher mobile positioning */
+        .fixed.top-4.left-4 {
+          top: 0.5rem !important;
+          left: 0.5rem !important;
+        }
+        
+        /* Navigation mobile optimization */
+        nav .flex.flex-col.md\\:flex-row {
+          gap: 1rem !important;
+        }
+        
+        /* Hero section mobile typography */
+        .font-mono pre {
+          font-size: 0.5rem !important;
+          line-height: 0.6rem !important;
+          overflow-x: auto !important;
+          white-space: pre !important;
+        }
+        
+        /* Main content mobile spacing */
+        main .space-y-8 {
+          gap: 1.5rem !important;
+        }
+        
+        /* Email controls card mobile */
+        .relative.group .space-y-6 {
+          gap: 1rem !important;
+        }
+        
+        /* Input field mobile optimization */
+        #addr {
+          font-size: 14px !important;
+          padding-top: 0.875rem !important;
+          padding-bottom: 0.875rem !important;
+        }
+        
+        /* Button group mobile stacking */
+        .grid.grid-cols-1.sm\\:grid-cols-2 {
+          grid-template-columns: 1fr !important;
+          gap: 0.75rem !important;
+        }
+        
+        /* Button mobile sizing */
+        button {
+          min-height: 48px !important;
+          font-size: 0.875rem !important;
+        }
+        
+        /* Table mobile responsive */
+        .overflow-x-auto table {
+          min-width: 600px !important;
+        }
+        
+        .overflow-x-auto {
+          -webkit-overflow-scrolling: touch !important;
+        }
+        
+        /* Features grid mobile */
+        .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+          grid-template-columns: 1fr !important;
+          gap: 2rem !important;
+        }
+        
+        /* Use cases grid mobile */
+        .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
+        }
+        
+        /* Benefits grid mobile */
+        .grid.grid-cols-1.md\\:grid-cols-2 {
+          grid-template-columns: 1fr !important;
+          gap: 1.5rem !important;
+        }
+        
+        /* Footer mobile */
+        .grid.grid-cols-1.md\\:grid-cols-4 {
+          grid-template-columns: 1fr !important;
+          gap: 2rem !important;
+        }
+        
+        /* Email modal mobile */
+        .email-modal-content {
+          max-width: 95vw !important;
+          margin: 0.5rem !important;
+          max-height: 95vh !important;
+        }
+        
+        .email-modal .px-6 {
+          padding-left: 1rem !important;
+          padding-right: 1rem !important;
+        }
+        
+        .email-modal .grid-cols-2 {
+          grid-template-columns: 1fr !important;
+          gap: 0.5rem !important;
+        }
+        
+        /* Welcome message modal mobile */
+        #welcomeMessage .max-w-md {
+          max-width: 90vw !important;
+          margin: 1rem !important;
+        }
+        
+        /* Typography mobile */
+        h1 {
+          font-size: 1.5rem !important;
+          line-height: 2rem !important;
+        }
+        
+        h2 {
+          font-size: 1.25rem !important;
+          line-height: 1.75rem !important;
+        }
+        
+        h3 {
+          font-size: 1.125rem !important;
+          line-height: 1.5rem !important;
+        }
+        
+        /* Card padding mobile */
+        .p-8 {
+          padding: 1rem !important;
+        }
+        
+        .p-6 {
+          padding: 1rem !important;
+        }
+        
+        /* Icon sizing mobile */
+        .w-20.h-20 {
+          width: 3rem !important;
+          height: 3rem !important;
+        }
+        
+        .w-16.h-16 {
+          width: 2.5rem !important;
+          height: 2.5rem !important;
+        }
+        
+        /* Search input mobile */
+        #email-search {
+          font-size: 14px !important;
+        }
+        
+        /* Auto refresh mobile */
+        .bg-gray-50.rounded-xl.p-4 {
+          padding: 0.75rem !important;
+        }
+        
+        .flex.items-center.justify-between {
+          flex-direction: column !important;
+          align-items: flex-start !important;
+          gap: 0.75rem !important;
+        }
+        
+        /* FAQ mobile */
+        .faq-question {
+          padding: 0.75rem 1rem !important;
+          font-size: 0.875rem !important;
+        }
+        
+        .faq-answer {
+          padding: 0.75rem 1rem !important;
+          font-size: 0.875rem !important;
+        }
+        
+        /* Chinese text mobile optimization */
+        p, span, div {
+          word-break: break-word !important;
+          line-height: 1.6 !important;
+        }
+        
+        /* Chinese navigation mobile */
+        nav .flex.flex-wrap {
+          justify-content: center !important;
+          text-align: center !important;
+        }
+      }
+      
+      /* Extra small mobile devices */
+      @media (max-width: 480px) {
+        /* ASCII art further reduction */
+        .font-mono pre {
+          font-size: 0.375rem !important;
+          line-height: 0.5rem !important;
+        }
+        
+        /* Container extra padding reduction */
+        .max-w-6xl {
+          padding-left: 0.5rem !important;
+          padding-right: 0.5rem !important;
+        }
+        
+        /* Card margin reduction */
+        .space-y-8 > * + * {
+          margin-top: 1rem !important;
+        }
+        
+        /* Typography further reduction */
+        h1 {
+          font-size: 1.25rem !important;
+          line-height: 1.75rem !important;
+        }
+        
+        /* Button padding */
+        button {
+          padding-left: 1rem !important;
+          padding-right: 1rem !important;
+        }
+        
+        /* Input padding */
+        input {
+          padding-left: 2.5rem !important;
+          padding-right: 2.5rem !important;
+        }
+        
+        /* Chinese text extra small mobile */
+        .text-lg {
+          font-size: 1rem !important;
+        }
+        
+        .text-xl {
+          font-size: 1.125rem !important;
+        }
+        
+        .text-2xl {
+          font-size: 1.25rem !important;
+        }
+        
+        .text-3xl {
+          font-size: 1.5rem !important;
+        }
+      }
+      
+      /* Scrollbar styling for email content */
+      .email-body::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      .email-body::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 3px;
+      }
+      
+      .email-body::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+      }
+      
+      .email-body::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+      
+      /* Touch-friendly improvements */
+      @media (hover: none) and (pointer: coarse) {
+        /* Increase touch targets */
+        button, .faq-question, a {
+          min-height: 44px !important;
+        }
+        
+        /* Remove hover effects on touch devices */
+        .group:hover .group-hover\\:scale-105 {
+          transform: none !important;
+        }
+        
+        .group:hover .group-hover\\:shadow-2xl {
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+      }
+      
+
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-gray-50 transition-colors duration-300">
+    <div class="max-w-6xl mx-auto p-4">
+      <!-- 语言切换 -->
+      <div class="fixed top-4 left-4 z-50">
+        <div class="bg-white p-2 rounded-lg shadow-lg">
+          <div class="flex gap-2">
+            <a href="https://tempmailto.online/" class="px-3 py-1 text-sm text-gray-600 hover:text-blue-600 transition-colors">EN</a>
+            <span class="text-gray-300">|</span>
+            <a href="https://tempmailto.online/zh/" class="px-3 py-1 text-sm text-blue-600 font-medium transition-colors">中文</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <header class="text-center py-8">
+        <!-- Navigation -->
+        <nav class="bg-white rounded-lg shadow-lg p-4 mb-6">
+          <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center gap-2 mb-4 md:mb-0">
+              <i class="fa-solid fa-envelope text-2xl text-blue-600"></i>
+              <span class="text-2xl font-bold text-gray-900">临时邮箱</span>
+            </div>
+            <div class="flex flex-wrap gap-4">
+              <a href="#features" class="text-gray-600 hover:text-blue-600 transition-colors">功能特色</a>
+              <a href="#faq" class="text-gray-600 hover:text-blue-600 transition-colors">常见问题</a>
+              <a href="#contact" class="text-gray-600 hover:text-blue-600 transition-colors">联系我们</a>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
+          <div class="font-mono text-xs sm:text-sm text-blue-600 whitespace-pre overflow-x-auto mb-2">
+            <pre class="text-center">
+              ████████╗███████╗███╗   ███╗██████╗     ███╗   ███╗ █████╗ ██╗██╗     
+              ╚══██╔══╝██╔════╝████╗ ████║██╔══██╗    ████╗ ████║██╔══██╗██║██║     
+                 ██║   █████╗  ██╔████╔██║██████╔╝    ██╔████╔██║███████║██║██║     
+                 ██║   ██╔══╝  ██║╚██╔╝██║██╔═══╝     ██║╚██╔╝██║██╔══██║██║██║     
+                 ██║   ███████╗██║ ╚═╝ ██║██║         ██║ ╚═╝ ██║██║  ██║██║███████╗
+                 ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝         ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝
+            </pre>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="relative mt-8">
+        <!-- Core Function Highlight Background -->
+        <div class="relative bg-gradient-to-br from-blue-600/5 via-purple-600/5 to-indigo-600/5 rounded-3xl p-8 border-2 border-blue-200/50 shadow-2xl backdrop-blur-sm">
+          <!-- Decorative Elements -->
+          <div class="absolute inset-0 overflow-hidden rounded-3xl">
+            <div class="absolute -top-4 -left-4 w-24 h-24 bg-blue-400/20 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-purple-400/20 rounded-full blur-2xl"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-indigo-300/10 rounded-full blur-3xl"></div>
+          </div>
+          
+          <!-- Core Function Header -->
+          <div class="relative text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-600 rounded-2xl mb-4 shadow-lg animate-pulse">
+              <i class="fa-solid fa-bolt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+              临时邮箱服务
+            </h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+              保护您的真实邮箱地址免受垃圾邮件和不必要消息的困扰。即时生成临时邮箱地址，实时接收邮件。
+            </p>
+          </div>
+
+          <div class="space-y-8">
+            <!-- Email Controls Card -->
+            <div class="relative group">
+              <!-- Glow effect -->
+              <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+              
+              <div class="relative bg-white rounded-2xl shadow-xl border border-blue-100 p-8 backdrop-blur-sm">
+                <!-- Card Header -->
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <i class="fa-solid fa-envelope text-white text-xl"></i>
+                    </div>
+                    <div>
+                      <span class="text-xl font-bold text-gray-900">邮箱控制台</span>
+                      <p class="text-sm text-gray-600">管理您的临时邮箱地址</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    
+                  </div>
+                </div>
+
+                <div class="space-y-6">
+                  <!-- Email Input Group -->
+                  <div class="relative group">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                      <i class="fa-solid fa-at mr-2 text-blue-600"></i>
+                      当前邮箱地址
+                    </label>
+                    <div class="relative">
+                      <input 
+                        id="addr" 
+                        placeholder="点击生成新地址按钮获取邮箱..." 
+                        readonly 
+                        class="w-full pl-12 pr-14 py-4 border-2 border-gray-200 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 text-gray-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 font-mono text-lg"
+                      />
+                      <i class="fa-solid fa-at absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-500"></i>
+                      <button
+                        onclick="copyEmail()"
+                        title="复制邮箱"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2.5 text-gray-500 hover:text-blue-600 transition-all duration-300 hover:scale-110 bg-white rounded-lg shadow-sm hover:shadow-md"
+                      >
+                        <i class="fa-solid fa-copy"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <!-- Button Group -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button 
+                      onclick="refreshMail()" 
+                      class="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 group shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    >
+                      <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                      <i class="fa-solid fa-rotate group-hover:rotate-180 transition-transform duration-500"></i> 
+                      <span>加载邮件</span>
+                    </button>
+                    <button 
+                      onclick="genEmail()" 
+                      class="relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 group shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    >
+                      <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                      <i class="fa-solid fa-wand-magic-sparkles group-hover:scale-110 transition-transform duration-300"></i> 
+                      <span>生成新地址</span>
+                    </button>
+                  </div>
+                  
+                  <!-- Auto Refresh Settings -->
+                  <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                      <label class="flex items-center gap-3 text-gray-700 cursor-pointer group">
+                        <div class="relative">
+                          <input type="checkbox" id="auto-refresh" class="sr-only" />
+                          <div class="w-6 h-6 border-2 border-gray-300 rounded-md transition-all duration-200 group-hover:border-blue-500"></div>
+                          <i class="fa-solid fa-check absolute inset-0 w-6 h-6 text-blue-600 opacity-0 transition-opacity duration-200"></i>
+                        </div>
+                        <i class="fa-solid fa-arrows-rotate text-blue-600"></i>
+                        <span class="font-medium">自动刷新邮件</span>
+                      </label>
+                      <select id="refresh-interval" class="border-2 border-gray-200 rounded-lg px-4 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 min-w-0 w-full sm:w-auto">
+                        <option value="10">每10秒</option>
+                        <option value="30">每30秒</option>
+                        <option value="60">每1分钟</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Email List Card -->
+            <div class="relative group">
+              <!-- Glow effect -->
+              <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+              
+              <div class="relative bg-white rounded-2xl shadow-xl border border-purple-100 p-8 backdrop-blur-sm">
+                <!-- Card Header -->
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <i class="fa-solid fa-inbox text-white text-xl"></i>
+                    </div>
+                    <div>
+                      <span class="text-xl font-bold text-gray-900">收件箱</span>
+                      <p class="text-sm text-gray-600">查看接收到的邮件</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                  </div>
+                </div>
+
+                <!-- Search Container -->
+                <div class="mb-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fa-solid fa-magnifying-glass mr-2 text-purple-600"></i>
+                    搜索邮件
+                  </label>
+                  <div class="relative">
+                    <input
+                      type="text"
+                      id="email-search"
+                      placeholder="输入关键词搜索邮件内容..."
+                      class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl bg-gradient-to-r from-gray-50 to-purple-50 text-gray-900 focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all duration-300"
+                    />
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-500"></i>
+                  </div>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="loading-spinner" class="spinner hidden"></div>
+                
+                <!-- Error Message -->
+                <div id="error-message" class="hidden text-red-600 text-center py-4 bg-red-50 rounded-xl"></div>
+
+                <!-- Email Table -->
+                <div class="overflow-x-auto bg-gray-50 rounded-xl border border-gray-200">
+                  <table id="emails" class="w-full">
+                    <thead>
+                      <tr class="border-b border-gray-200 bg-gradient-to-r from-gray-100 to-purple-100">
+                        <th class="text-left py-4 px-6 font-semibold text-gray-900">
+                          <i class="fa-solid fa-hashtag mr-2 text-purple-600"></i> 编号
+                        </th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-900">
+                          <i class="fa-solid fa-user mr-2 text-blue-600"></i> 发件人
+                        </th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-900">
+                          <i class="fa-solid fa-envelope mr-2 text-green-600"></i> 主题
+                        </th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-900">
+                          <i class="fa-solid fa-calendar mr-2 text-orange-600"></i> 日期
+                        </th>
+                        <th class="text-left py-4 px-6 font-semibold text-gray-900">
+                          <i class="fa-solid fa-gear mr-2 text-gray-600"></i> 操作
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Why Choose Us -->
+      <div class="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl shadow-xl overflow-hidden mt-12">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 opacity-5">
+          <div class="absolute top-10 left-10 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div class="absolute bottom-10 right-10 w-40 h-40 bg-purple-400 rounded-full blur-3xl"></div>
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-300 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative p-8">
+          <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6 shadow-lg">
+              <i class="fa-solid fa-crown text-white text-2xl"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent mb-4">
+              为什么选择临时邮箱服务
+            </h2>
+            <p class="text-lg text-gray-600 mb-6 max-w-3xl mx-auto leading-relaxed">
+              我们提供安全、匿名、免费的临时邮箱服务，告别垃圾邮件，保护您的隐私。
+            </p>
+            <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto"></div>
+          </div>
+          
+          <!-- Service Features -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <div class="group text-center transform hover:scale-105 transition-all duration-300">
+              <div class="relative w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:shadow-blue-500/25 transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <i class="fa-solid fa-user-secret text-white text-2xl relative z-10 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+              <span class="font-bold text-xl text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">完全匿名</span>
+              <p class="text-gray-600 leading-relaxed">无需注册账户，无需提供个人信息，完全匿名使用临时邮箱服务</p>
+            </div>
+            
+            <div class="group text-center transform hover:scale-105 transition-all duration-300">
+              <div class="relative w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:shadow-green-500/25 transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <i class="fa-solid fa-rocket text-white text-2xl relative z-10 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+              <span class="font-bold text-xl text-gray-900 mb-3 group-hover:text-green-600 transition-colors duration-300">快速生成</span>
+              <p class="text-gray-600 leading-relaxed">点击按钮即可在几秒内生成新的临时邮箱地址，随时可用</p>
+            </div>
+            
+            <div class="group text-center transform hover:scale-105 transition-all duration-300">
+              <div class="relative w-20 h-20 bg-gradient-to-r from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:shadow-purple-500/25 transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-400 to-violet-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <i class="fa-solid fa-shield-check text-white text-2xl relative z-10 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+              <span class="font-bold text-xl text-gray-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">安全可靠</span>
+              <p class="text-gray-600 leading-relaxed">邮件自动删除，不留痕迹，确保您的隐私和数据安全</p>
+            </div>
+            
+            <div class="group text-center transform hover:scale-105 transition-all duration-300">
+              <div class="relative w-20 h-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl group-hover:shadow-orange-500/25 transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-400 rounded-2xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <i class="fa-solid fa-globe text-white text-2xl relative z-10 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+              <span class="font-bold text-xl text-gray-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">全球可用</span>
+              <p class="text-gray-600 leading-relaxed">支持全球范围内的邮件接收，兼容各种邮件服务商</p>
+            </div>
+          </div>
+          
+          <!-- Use Cases -->
+          <div class="mb-16">
+            <div class="text-center mb-10">
+              <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">临时邮箱的常见使用场景</h2>
+              <p class="text-gray-600 max-w-2xl mx-auto">了解临时邮箱在日常生活中的实用场景</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div class="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-gray-100 transform hover:-translate-y-2 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                  <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-user-plus text-white"></i>
+                  </div>
+                  <span class="font-bold text-lg text-gray-900">网站注册</span>
+                </div>
+                <p class="text-gray-600 leading-relaxed">注册各种网站、应用、论坛时使用，避免真实邮箱被滥用或收到垃圾邮件</p>
+              </div>
+              
+              <div class="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-gray-100 transform hover:-translate-y-2 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                  <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-download text-white"></i>
+                  </div>
+                  <span class="font-bold text-lg text-gray-900">文件下载</span>
+                </div>
+                <p class="text-gray-600 leading-relaxed">下载需要邮箱验证的文件、软件、资源时，保护您的真实邮箱地址</p>
+              </div>
+              
+              <div class="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-gray-100 transform hover:-translate-y-2 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                  <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-violet-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-gift text-white"></i>
+                  </div>
+                  <span class="font-bold text-lg text-gray-900">活动参与</span>
+                </div>
+                <p class="text-gray-600 leading-relaxed">参与在线活动、比赛、抽奖等需要邮箱的场合，避免后续营销邮件</p>
+              </div>
+              
+              <div class="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-gray-100 transform hover:-translate-y-2 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                  <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-eye text-white"></i>
+                  </div>
+                  <span class="font-bold text-lg text-gray-900">服务试用</span>
+                </div>
+                <p class="text-gray-600 leading-relaxed">试用各种在线服务、免费试用期产品时，保护个人信息隐私</p>
+              </div>
+              
+              <div class="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-gray-100 transform hover:-translate-y-2 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                  <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-comments text-white"></i>
+                  </div>
+                  <span class="font-bold text-lg text-gray-900">反馈留言</span>
+                </div>
+                <p class="text-gray-600 leading-relaxed">在网站留言、提交反馈、联系客服时，保护真实联系方式</p>
+              </div>
+              
+              <div class="group bg-white rounded-xl p-6 shadow-lg hover:shadow-xl border border-gray-100 transform hover:-translate-y-2 transition-all duration-300">
+                <div class="flex items-center mb-4">
+                  <div class="w-12 h-12 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-shield-virus text-white"></i>
+                  </div>
+                  <span class="font-bold text-lg text-gray-900">安全测试</span>
+                </div>
+                <p class="text-gray-600 leading-relaxed">测试不可信网站、验证邮件安全性时，避免真实邮箱受到威胁</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Benefits -->
+          <div class="relative bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 rounded-2xl p-8 text-white overflow-hidden">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-10">
+              <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+            </div>
+            
+            <div class="relative">
+              <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur rounded-full mb-4">
+                  <i class="fa-solid fa-trophy text-white text-2xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">选择临时邮箱的优势</h2>
+                <p class="text-blue-100 max-w-2xl mx-auto">体验我们服务带来的多重便利与保障</p>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex items-start group">
+                  <div class="flex-shrink-0 w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-check-circle text-green-300 text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="font-bold text-xl mb-2">保护隐私</span>
+                    <p class="text-blue-100 leading-relaxed">避免真实邮箱地址被收集、出售或用于垃圾邮件营销</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start group">
+                  <div class="flex-shrink-0 w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-check-circle text-green-300 text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="font-bold text-xl mb-2">减少垃圾邮件</span>
+                    <p class="text-blue-100 leading-relaxed">有效防止垃圾邮件、推广邮件进入您的主邮箱</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start group">
+                  <div class="flex-shrink-0 w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-check-circle text-green-300 text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="font-bold text-xl mb-2">节省时间</span>
+                    <p class="text-blue-100 leading-relaxed">无需管理和清理垃圾邮件，节省邮箱管理时间</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start group">
+                  <div class="flex-shrink-0 w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-check-circle text-green-300 text-xl"></i>
+                  </div>
+                  <div>
+                    <span class="font-bold text-xl mb-2">提升安全</span>
+                    <p class="text-blue-100 leading-relaxed">降低真实邮箱被黑客攻击或数据泄露的风险</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer id="contact" class="mt-12 py-12">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+          <!-- Main Footer Content -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <!-- About Section -->
+            <div class="md:col-span-2">
+              <div class="flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-envelope text-2xl text-blue-600"></i>
+                <span class="text-xl font-bold text-gray-900">临时邮箱</span>
+              </div>
+              <p class="text-gray-600 mb-4 max-w-md">
+                免费、安全、私密的临时邮箱服务。使用我们的一次性邮箱解决方案保护您的真实邮箱地址免受垃圾邮件和不必要消息的困扰。
+              </p>
+              <div class="flex items-center gap-2 text-sm text-gray-500">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>注重隐私 • 无需注册 • 开源项目</span>
+              </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+              <span class="font-semibold text-gray-900 mb-4">快速链接</span>
+              <ul class="space-y-2 text-gray-600">
+                <li><a href="#features" class="hover:text-blue-600 transition-colors">功能特色</a></li>
+                <li><a href="#faq" class="hover:text-blue-600 transition-colors">常见问题</a></li>
+                <li><a href="../privacy/privacy.html" target="_blank" class="hover:text-blue-600 transition-colors">隐私政策</a></li>
+                <li><button onclick="showWarning()" class="hover:text-blue-600 transition-colors text-left">使用条款</button></li>
+              </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+              <span class="font-semibold text-gray-900 mb-4">联系我们</span>
+              <div class="space-y-3">
+                <a href="mailto:mehmetkahyakas5@gmail.com" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+                  <i class="fa-solid fa-envelope"></i>
+                  <span>邮件支持</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Warning and Actions -->
+          <div class="border-t border-gray-200 pt-8 mb-8">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div class="flex items-start gap-3">
+                <i class="fa-solid fa-triangle-exclamation text-yellow-600 mt-1"></i>
+                <div>
+                  <span class="font-semibold text-yellow-800 mb-1">教育目的声明</span>
+                  <p class="text-sm text-yellow-700">
+                    此项目仅用于教育目的。请负责任和合法地使用。我们不对此服务的任何滥用行为负责。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row justify-center gap-3 mb-8">
+            <button 
+              class="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-3 px-6 rounded-lg transition-colors" 
+              onclick="showWarning()"
+            >
+              <i class="fa-solid fa-triangle-exclamation"></i> 查看完整声明
+            </button>
+            <a
+              href="../privacy/privacy.html"
+              target="_blank"
+              class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+            >
+              <i class="fa-solid fa-shield"></i> 隐私政策
+            </a>
+            <button 
+              class="bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            >
+              <i class="fa-solid fa-arrow-up"></i> 回到顶部
+            </button>
+          </div>
+
+          <!-- Bottom Footer -->
+          <div class="text-center pt-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p class="text-gray-600">
+                <i class="fa-solid fa-code mr-2"></i>
+                © 2025 tempmailto.online - 保留所有权利
+              </p>
+              <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-500">用</span>
+                <i class="fa-solid fa-heart text-red-500"></i>
+                <span class="text-sm text-gray-500">为隐私而制作</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Welcome Message Modal -->
+    <div id="welcomeMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg shadow-xl max-w-md mx-4 p-6">
+        <div class="text-center">
+          <div class="flex items-center justify-center gap-2 mb-4">
+            <i class="fas fa-info-circle text-blue-600 text-2xl"></i>
+            <h3 class="text-xl font-bold text-gray-900">欢迎使用临时邮箱</h3>
+          </div>
+          
+          <div class="text-gray-600 text-left space-y-3">
+            <p><strong>如果您看到"加载失败"消息：</strong></p>
+            <ul class="list-disc list-inside space-y-1">
+              <li>请尝试多次点击"生成新地址"按钮</li>
+              <li>
+                如果问题仍然存在，请通过GitHub或LinkedIn联系我
+              </li>
+            </ul>
+            <p class="text-center">感谢您使用我的项目！ ❤️</p>
+          </div>
+          
+          <div class="mt-6">
+            <button 
+              onclick="hideWelcomeMessage()" 
+              class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+            >
+              知道了！
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showWarning() {
+        alert(
+          "⚠️ 此项目纯粹用于教育目的。我们不允许使用此项目进行任何非法活动，对于任何可能发生的事件我们概不负责。此项目使用 mail.gw 的 API 创建临时邮箱。请合法和负责任地使用它 ⚠️"
+        );
+      }
+    </script>
+
+    <script>
+      // Close notification functionality
+      document.getElementById('close-notification')?.addEventListener('click', () => {
+        document.getElementById('update-notification').classList.add('hidden');
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Only show welcome message if not seen before
+        if (!localStorage.getItem("welcomeMessageSeen")) {
+          setTimeout(() => {
+            const welcomeMessage = document.getElementById("welcomeMessage");
+            welcomeMessage.classList.remove('hidden');
+            welcomeMessage.classList.add('show');
+          }, 1000);
+        }
+      });
+      
+      // Poll functionality
+      let selectedRating = 0;
+
+      // Handle star click
+      document
+        .querySelectorAll(".star-rating .fa-star")
+        .forEach(function (star) {
+          star.addEventListener("click", function () {
+            selectedRating = parseInt(this.getAttribute("data-value"));
+            highlightStars(selectedRating);
+          });
+
+          star.addEventListener("mouseover", function () {
+            const hoverValue = parseInt(this.getAttribute("data-value"));
+            highlightStars(hoverValue);
+          });
+
+          star.addEventListener("mouseout", function () {
+            highlightStars(selectedRating);
+          });
+        });
+
+      function highlightStars(rating) {
+        document
+          .querySelectorAll(".star-rating .fa-star")
+          .forEach(function (star) {
+            if (parseInt(star.getAttribute("data-value")) <= rating) {
+              star.classList.add("checked");
+            } else {
+              star.classList.remove("checked");
+            }
+          });
+      }
+
+      function submitPoll() {
+        if (selectedRating > 0) {
+          console.log(
+            `User rated the new UI as: ${selectedRating} out of 5`
+          );
+          alert("感谢您的反馈！");
+          document.querySelector(".poll").style.display = "none";
+        } else {
+          alert("请在提交前选择评分。");
+        }
+      }
+
+      // FAQ functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        // Auto-refresh checkbox functionality
+        const autoRefreshCheckbox = document.getElementById('auto-refresh');
+        const autoRefreshLabel = autoRefreshCheckbox.parentElement;
+        const checkboxVisual = autoRefreshLabel.querySelector('div');
+        const checkIcon = autoRefreshLabel.querySelector('.fa-check');
+        
+        // Handle checkbox toggle
+        autoRefreshLabel.addEventListener('click', () => {
+          autoRefreshCheckbox.checked = !autoRefreshCheckbox.checked;
+          updateCheckboxVisual();
+        });
+        
+        // Update visual state
+        function updateCheckboxVisual() {
+          if (autoRefreshCheckbox.checked) {
+            checkboxVisual.classList.add('bg-blue-600', 'border-blue-600');
+            checkboxVisual.classList.remove('border-gray-300');
+            checkIcon.classList.remove('opacity-0');
+            checkIcon.classList.add('opacity-100');
+          } else {
+            checkboxVisual.classList.remove('bg-blue-600', 'border-blue-600');
+            checkboxVisual.classList.add('border-gray-300');
+            checkIcon.classList.add('opacity-0');
+            checkIcon.classList.remove('opacity-100');
+          }
+        }
+        
+        // Initialize checkbox state
+        updateCheckboxVisual();
+        
+        // FAQ toggle functionality
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+          question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            const icon = question.querySelector('.fa-chevron-down');
+            
+            // Toggle answer visibility
+            if (answer.classList.contains('hidden')) {
+              answer.classList.remove('hidden');
+              icon.style.transform = 'rotate(180deg)';
+            } else {
+              answer.classList.add('hidden');
+              icon.style.transform = 'rotate(0deg)';
+            }
+          });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+              target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          });
+        });
+      });
+
+      function hideWelcomeMessage() {
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        welcomeMessage.style.animation = "slideOut 0.5s ease forwards";
+        
+        // Create confetti explosion
+        confetti({
+          particleCount: 150,
+          spread: 180,
+          origin: { y: 0.8 },
+          colors: ['#3B82F6', '#60A5FA', '#2563EB', '#10B981', '#34D399'],
+          startVelocity: 45,
+          gravity: 1.2,
+          scalar: 0.7,
+          ticks: 150
+        });
+
+        setTimeout(() => {
+          welcomeMessage.classList.add('hidden');
+          localStorage.setItem("welcomeMessageSeen", "true");
+        }, 500);
+      }
+    </script>
+
+    <script src="../js/config.js" type="module"></script>
+    <script src="../js/api-zh.js" type="module"></script>
+  </body>
+</html> 
